@@ -1,0 +1,1 @@
+agrega un parche si es necesario, en lo que odoo verifica e integra el parche, pq se tarda mucho

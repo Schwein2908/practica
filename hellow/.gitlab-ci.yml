@@ -1,0 +1,43 @@
+# este archivo le da las instrucciones a gitlab para realizar las pruebas automatizadas
+#hay tres pruebas: pre-commit, test, post-commit
+
+precommit:
+  stage: pre
+  tags:
+    - lint
+    #lint son estandares de codigo de programacion
+  script:
+    - source variables.sh #ejecuta un archivo
+    - PRECOMMIT_HOOKS_TYPE=${PRECOMMIT_HOOKS_TYPE},-optional pre-commit-vaucoo #ejecuta un comando
+
+
+#script ejecuta las cosas enlistadas bajo el
+
+#pre-commit corrige los errores de estandares de codigo o te señala donde esta
+#tmb existen precommite_optional, que no detienen instantaneamente la produccion
+
+#la etapa build_docker se encarga de crear una imagen de docker. Crea una imagen, la sube al servidor y en base a esa imagen se hacen las pruebas
+#docker virtualiza sistemas operativos, funciona a base de script
+
+#odoo_sh_deploy detecta los cambios y los sube a una instancia de odoo sh. Lo automatiza
+
+odoo_test: #TOMA LA imagen creada en la etapa pasada
+#inicia odoo y te instala de forma automatica todos los modulos del repositorios, ejecuta pruebas unitarias.
+  stage: test
+  tags:
+    - odoo
+  needs: ["build_docker"]
+  script:
+    - source variables.sh
+    - source $CI_COMMIT_REF_SLUG/image_name.env
+    - blablabla
+  artifacts:
+    when: always
+    paths:
+    - $CI_COMMIT_REF_SLUG
+
+#en la etapa post (dividdida en coverage y warnings)
+#coverage revisa el % de codigo testeado o con pruebas automatizadas
+#warnings valida que no hayas metido una warning
+
+#al poner todo esto dentro de este archivo, el sistema gitlab detecta automaticamente las pruebas que debe realizar

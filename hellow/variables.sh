@@ -1,0 +1,1 @@
+#pones las cuestiones variables de entorno que usa el gitlab-ci para ejecutarse
